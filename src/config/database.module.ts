@@ -2,6 +2,7 @@ import { Module, Global, DynamicModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EnvModule } from './env.module';
 import { EnvService } from './env.service';
+import { Users } from '../users/users.entity';
 
 function DatabaseOrmModule(): DynamicModule {
   const config = new EnvService().read();
@@ -12,7 +13,7 @@ function DatabaseOrmModule(): DynamicModule {
     username: config.DB_USER,
     password: config.DB_PASSWORD,
     database: config.DB_NAME,
-    entities: [],
+    entities: [Users],
     synchronize: false,
   });
 }
