@@ -14,8 +14,8 @@ export class AuthController {
 
   @UseGuards(AuthGuard('local'))
   @Post('auth/login')
-  async login(@Request() req) {
-    return this.authService.login(req.user);
+  async login(@Body() userDto: UserDto) {
+    return this.authService.login(userDto);
   }
 
   @UseGuards(AuthGuard('jwt'))
