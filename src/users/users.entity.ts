@@ -1,8 +1,10 @@
 import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert } from 'typeorm';
-import * as crypto from 'crypto';
+import * as bcrypt from 'bcrypt';
 
 @Entity()
 export class User {
+    private saltRounds = 10;
+
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -10,8 +12,8 @@ export class User {
     username: string;
 
     @BeforeInsert()
-    hashPassword() {
-        this.password = crypto.createHmac('sha256', this.password).digest('hex');
+    async hashPassword() {
+        this.password = await bcrypt.hash(this.password, this.saltRounds);
     }
 
     @Column()

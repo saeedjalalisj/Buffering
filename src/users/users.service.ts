@@ -25,7 +25,10 @@ export class UsersService {
 
   async create(userDto: UserDto) {
     try {
-      return await this.userRepository.save(userDto);
+      // because @beforeInsert not working
+      // https://github.com/typeorm/typeorm/issues/674
+      const entity = Object.assign(new User(), userDto);
+      return await this.userRepository.save(entity);
     } catch (e) {
       console.error(e);
     }
