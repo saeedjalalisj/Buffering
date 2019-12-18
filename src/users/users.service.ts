@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './users.entity';
@@ -30,7 +30,10 @@ export class UsersService {
       const entity = Object.assign(new User(), userDto);
       return await this.userRepository.save(entity);
     } catch (e) {
-      console.error(e);
+      if (e.errno === 1062) {
+        throw new HttpException('ConflictException', HttpStatus.CONFLICT);
+      }
+      throw new HttpException('InternalServerErrorException', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
