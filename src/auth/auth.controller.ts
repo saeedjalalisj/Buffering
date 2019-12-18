@@ -13,7 +13,6 @@ export class AuthController {
   }
 
   @Post('auth/login')
-  @UsePipes(new ValidationPipe())
   async login(@Body() userDto: UsersDto) {
     return this.authService.login(userDto);
   }
