@@ -14,6 +14,7 @@ export interface EnvData {
   DB_USER: string;
   DB_PASSWORD: string;
   JWT_SECRET: string;
+  JWT_EXPIRES_IN: string;
 }
 
 export class EnvService {

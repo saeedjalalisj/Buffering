@@ -3,6 +3,8 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UsersService } from '../users/users.service';
 import {UsersDto} from '../users/dto/users.dto';
+import { IPayload } from './auth.interface';
+import { jwtConstants } from './auth.constants';
 
 @Injectable()
 export class AuthService {
@@ -24,7 +26,7 @@ export class AuthService {
     }
     const payload = { username: user.username, sub: user.id };
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: this.createToken(payload),
     };
   }
 
@@ -33,8 +35,12 @@ export class AuthService {
     if (user) {
       const payload = { username: user.username, sub: user.id };
       return {
-        access_token: this.jwtService.sign(payload),
+        access_token: this.createToken(payload),
       };
     }
+  }
+
+  createToken(payload: IPayload) {
+    return this.jwtService.sign(payload, { expiresIn: jwtConstants.expiresIn });
   }
 }
