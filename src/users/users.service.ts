@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './users.entity';
-import { UserDto } from './dto/user.dto';
+import { UsersDto } from './dto/users.dto';
 
 @Injectable()
 export class UsersService {
@@ -23,7 +23,7 @@ export class UsersService {
     return await this.userRepository.findOne({ where: { username } });
   }
 
-  async create(userDto: UserDto) {
+  async create(userDto: UsersDto) {
     try {
       // because @beforeInsert not working
       // https://github.com/typeorm/typeorm/issues/674
