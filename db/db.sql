@@ -37,9 +37,9 @@ CREATE TABLE IF NOT EXISTS company(
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(25) NOT NULL UNIQUE,
     description VARCHAR(255),
-    owner_id INT NOT NULL,
+    ownerId INT NOT NULL,
     CONSTRAINT fk_user_owner
-        FOREIGN KEY (owner_id)
+        FOREIGN KEY (ownerId)
             REFERENCES user(id)
             ON UPDATE CASCADE
             ON DELETE CASCADE
