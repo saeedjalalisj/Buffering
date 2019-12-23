@@ -6,6 +6,7 @@ import {UsersDto} from '../users/dto/users.dto';
 import { IPayload } from './auth.interface';
 import { jwtConstants } from './auth.constants';
 
+// todo: add role from db to user
 @Injectable()
 export class AuthService {
   constructor(private readonly usersService: UsersService, private readonly jwtService: JwtService) {}
@@ -24,7 +25,7 @@ export class AuthService {
     if (!user) {
       throw new HttpException('UnauthorizedException', HttpStatus.UNAUTHORIZED);
     }
-    const payload = { username: user.username, sub: user.id };
+    const payload = { username: user.username, sub: user.id, roles: 'admin'};
     return {
       access_token: this.createToken(payload),
     };
@@ -33,7 +34,7 @@ export class AuthService {
   async register(userDto: UsersDto ) {
     const user = await this.usersService.create(userDto);
     if (user) {
-      const payload = { username: user.username, sub: user.id };
+      const payload = { username: user.username, sub: user.id, roles: 'admin' };
       return {
         access_token: this.createToken(payload),
       };
