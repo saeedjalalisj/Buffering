@@ -3,12 +3,14 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './users.entity';
 import { UsersDto } from './dto/users.dto';
+import {RoleService} from '../role/role.service';
 
 @Injectable()
 export class UsersService {
   constructor(
       @InjectRepository(User)
       private readonly userRepository: Repository<User>,
+      private readonly roleService: RoleService,
   ) {}
 
   async findById(userId: string): Promise<User | undefined> {
@@ -28,6 +30,8 @@ export class UsersService {
       // because @beforeInsert not working
       // https://github.com/typeorm/typeorm/issues/674
       const entity = Object.assign(new User(), userDto);
+      const role = await this.roleService.findByRole('user');
+      entity.role = role.id;
       return await this.userRepository.save(entity);
     } catch (e) {
       if (e.errno === 1062) {
