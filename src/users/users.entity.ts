@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert, ManyToOne } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import {Role} from '../role/role.entity';
 
 @Entity()
 export class User {
@@ -22,4 +23,7 @@ export class User {
     @Column()
         // tslint:disable-next-line:variable-name
     created_at: string;
+
+    @ManyToOne(type => Role, role => role.users)
+    role: number;
 }
