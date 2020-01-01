@@ -25,7 +25,7 @@ export class AuthService {
     if (!user) {
       throw new HttpException('UnauthorizedException', HttpStatus.UNAUTHORIZED);
     }
-    const payload = { username: user.username, sub: user.id, roles: 'admin'};
+    const payload = { username: user.username, sub: user.id, roles: user.role};
     return {
       access_token: this.createToken(payload),
     };
@@ -34,7 +34,7 @@ export class AuthService {
   async register(userDto: UsersDto ) {
     const user = await this.usersService.create(userDto);
     if (user) {
-      const payload = { username: user.username, sub: user.id, roles: 'admin' };
+      const payload = { username: user.username, sub: user.id, roles: user.role };
       return {
         access_token: this.createToken(payload),
       };
