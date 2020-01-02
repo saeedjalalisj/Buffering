@@ -2,6 +2,8 @@ import {Controller, Request, Get, Post, UseGuards, Body, UsePipes, ValidationPip
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { UsersDto } from '../users/dto/users.dto';
+import { RolesGuard } from '../role/role.guard';
+import {Roles} from '../role/roles.decorator';
 
 @Controller()
 export class AuthController {
@@ -17,7 +19,9 @@ export class AuthController {
     return this.authService.login(userDto);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  // todo: todo remove simple test after finish this feature
+  @Roles('admin')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;

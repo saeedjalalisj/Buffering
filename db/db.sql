@@ -6,8 +6,13 @@ CREATE TABLE IF NOT EXISTS user(
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(15) NOT NULL UNIQUE,
     password CHAR(128),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    roleId INT NOT NULL,
+        CONSTRAINT fk_role
+        FOREIGN KEY (roleId)
+        REFERENCES role(id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 ) ENGINE=INNODB;
 
 CREATE TABLE IF NOT EXISTS role(
@@ -15,23 +20,6 @@ CREATE TABLE IF NOT EXISTS role(
     title VARCHAR(25) NOT NULL UNIQUE,
     description VARCHAR(255)
 ) ENGINE=INNODB;
-
-CREATE TABLE IF NOT EXISTS user_to_role(
-    user_id INT NOT NULL,
-    role_id INT NOT NULL,
-    PRIMARY KEY(user_id, role_id),
-    CONSTRAINT fk_user
-    FOREIGN KEY (user_id)
-    REFERENCES user(id)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-        CONSTRAINT fk_role
-    FOREIGN KEY (role_id)
-    REFERENCES role(id)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
-) ENGINE=INNODB;
-
 
 CREATE TABLE IF NOT EXISTS company(
     id INT AUTO_INCREMENT PRIMARY KEY,
